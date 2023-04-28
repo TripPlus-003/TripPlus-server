@@ -4,5 +4,6 @@ const { isAuth } = require('../services/auth');
 const UserController = require('../controllers/user');
 
 router.get('/account', isAuth, UserController.getUser);
+router.patch('/account', isAuth, UserController.editUser);
 
 module.exports = router;
