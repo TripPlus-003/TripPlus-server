@@ -119,8 +119,12 @@ const getAdminProjectMessages = handleErrorAsync(async (req, res, next) => {
     return next(appError(400, '查無此專案'));
   }
   const room = await Room.findOne({
-    projectId: projectId,
-    participants: { $in: [id] }
+    $and: [
+      {
+        participants: req.user
+      },
+      { projectId: projectId }
+    ]
   });
   if (!room) {
     return next(appError(400, '查無聊天室'));

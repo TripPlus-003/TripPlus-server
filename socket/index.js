@@ -14,8 +14,12 @@ module.exports = (io) => {
         return socket.emit('error', '請提供使用者 ID 和專案 ID');
       }
       const existingRoom = await Room.findOne({
-        participants: { $all: [id, receiver] },
-        projectId
+        $and: [
+          {
+            participants: req.user
+          },
+          { projectId: projectId }
+        ]
       });
 
       if (existingRoom) {
