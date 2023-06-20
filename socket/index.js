@@ -26,17 +26,15 @@ module.exports = (io) => {
         return next(appError(400, 'Room 已存在'));
       }
       const project = await Project.findById(projectId);
-      if (!room) {
-        try {
-          const newRoom = await Room.create({
-            participants: [id, receiver],
-            projectId,
-            projectCreator: project.creator
-          });
-        } catch (error) {
-          io.emit('error', error.message);
-          return;
-        }
+      try {
+        const newRoom = await Room.create({
+          participants: [id, receiver],
+          projectId,
+          projectCreator: project.creator
+        });
+      } catch (error) {
+        io.emit('error', error.message);
+        return;
       }
       io.emit('chatroomCreated', room);
     });
