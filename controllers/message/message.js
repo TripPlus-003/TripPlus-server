@@ -10,26 +10,6 @@ const Project = require('../../models/projectsModel');
 const defaultPageSize = 10;
 const defaultPageIndex = 1;
 
-const createMessages = handleErrorAsync(async (req, res, next) => {
-  const { receiver, content, projectId, roomId } = req.body;
-  const { id } = req.user;
-  const { pageIndex, pageSize } = req.query;
-  if (!receiver || !content || !roomId) {
-    return next(
-      appError(400, '以下欄位不可爲空：接收者 id、聊天訊息、專案 id 不可為空')
-    );
-  }
-  const newMessage = await Message.create({
-    sender: id,
-    receiver,
-    roomId
-  });
-  if (!newMessage) {
-    return next(appError(500, '新增訊息失敗'));
-  }
-  successHandler(res, '新增訊息成功', newMessage);
-});
-
 const getMemberMessages = handleErrorAsync(async (req, res, next) => {
   const { id } = req.user;
   const { roomId } = req.params;
@@ -195,7 +175,6 @@ const getAdminProjectMessages = handleErrorAsync(async (req, res, next) => {
 });
 
 module.exports = {
-  createMessages,
   getMemberMessages,
   getProjectMessages,
   getAdminProjectMessages

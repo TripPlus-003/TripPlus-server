@@ -6,7 +6,7 @@ const Room = require('../../models/roomsModel');
 const Message = require('../../models/messagesModel');
 const Project = require('../../models/projectsModel');
 
-const findOrCreateChatroom = handleErrorAsync(async (req, res, next) => {
+const createChatroom = handleErrorAsync(async (req, res, next) => {
   const { receiver, projectId } = req.body;
 
   if (!receiver || !projectId) {
@@ -40,9 +40,9 @@ const findOrCreateChatroom = handleErrorAsync(async (req, res, next) => {
   if (!newRoom) {
     return next(appError(400, '新增 Room 失敗'));
   }
-  successHandler(res, '新增 Room 成功', newRoom);
+  successHandler(res, '新增 ChatRoom 成功', newRoom);
 });
-const getChatroomMessage = handleErrorAsync(async (req, res, next) => {
+const getChatroom = handleErrorAsync(async (req, res, next) => {
   const { id } = req.user;
   const chatRooms = await Room.find({
     participants: id
@@ -79,6 +79,6 @@ const getChatroomMessage = handleErrorAsync(async (req, res, next) => {
       messages.push(message[0]);
     }
   }
-  successHandler(res, '取得 Room 成功', messages);
+  successHandler(res, '取得 ChatRoom 成功', messages);
 });
-module.exports = { findOrCreateChatroom, getChatroomMessage };
+module.exports = { createChatroom, getChatroom };

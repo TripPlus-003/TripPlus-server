@@ -3,8 +3,8 @@ const router = express.Router();
 const { isAuth, isAdmin } = require('../services/auth');
 const messagesController = require('../controllers/message');
 
-router.get('/chatroom', isAuth, messagesController.getChatroomMessage);
-router.post('/chatroom', isAuth, messagesController.findOrCreateChatroom);
+router.get('/chatroom', isAuth, messagesController.getChatroom);
+router.post('/chatroom', isAuth, messagesController.createChatroom);
 router.get(
   '/message/member/:roomId',
   isAuth,
@@ -20,6 +20,5 @@ router.get(
   isAdmin,
   messagesController.getAdminProjectMessages
 );
-router.post('/message', isAuth, messagesController.createMessages);
 
 module.exports = router;
