@@ -4,7 +4,7 @@ const { isAuth, isAdmin } = require('../services/auth');
 const messagesController = require('../controllers/message');
 
 router.get('/chatroom', isAuth, messagesController.getChatroomMessage);
-router.post('/chatroom', isAuth, messagesController.createChatroomRoom);
+router.post('/chatroom', isAuth, messagesController.findOrCreateChatroom);
 router.get('/message/member', isAuth, messagesController.getMemberMessages);
 router.get(
   '/message/project/:projectId',

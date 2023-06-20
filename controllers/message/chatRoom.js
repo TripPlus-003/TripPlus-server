@@ -6,7 +6,7 @@ const Room = require('../../models/roomsModel');
 const Message = require('../../models/messagesModel');
 const Project = require('../../models/projectsModel');
 
-const createChatroomRoom = handleErrorAsync(async (req, res, next) => {
+const findOrCreateChatroom = handleErrorAsync(async (req, res, next) => {
   const { receiver, projectId } = req.body;
 
   if (!receiver || !projectId) {
@@ -28,7 +28,7 @@ const createChatroomRoom = handleErrorAsync(async (req, res, next) => {
   });
 
   if (existingRoom !== null) {
-    return next(appError(400, 'Room 已存在'));
+    return next(appError(400, `${existingRoom.id} 已存在`));
   }
 
   const newRoom = await Room.create({
@@ -81,4 +81,4 @@ const getChatroomMessage = handleErrorAsync(async (req, res, next) => {
   }
   successHandler(res, '取得 Room 成功', messages);
 });
-module.exports = { createChatroomRoom, getChatroomMessage };
+module.exports = { findOrCreateChatroom, getChatroomMessage };
