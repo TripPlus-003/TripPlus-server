@@ -9,14 +9,10 @@ const roomSchema = new mongoose.Schema(
     },
     projectCreator: {
       type: String
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now
     }
   },
   { timestamps: true }
 );
 
-const Message = new mongoose.model('rooms', roomSchema);
-module.exports = Message;
+const Room = new mongoose.model('rooms', roomSchema);
+module.exports = Room;

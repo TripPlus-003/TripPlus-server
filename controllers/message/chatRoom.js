@@ -47,23 +47,38 @@ const getChatroomMessage = handleErrorAsync(async (req, res, next) => {
   const chatRooms = await Room.find({
     participants: id
   });
-  if (!chatRooms) {
+  if (!chatRooms || chatRooms.length === 0) {
     return next(appError(400, '查無聊天訊息'));
   }
-  const messages = await Message.find({
-    roomId: chatRooms.id
-  })
-    .populate({
-      path: 'sender',
-      select: 'name nickName photo'
-    })
-    .populate({
-      path: 'receiver',
-      select: 'name nickName photo'
-    })
-    .sort({ createdAt: -1 })
-    .limit(1);
 
+  const messages = [];
+
+  for (const chatRoom of chatRooms) {
+    const message = await Message.find({
+      roomId: chatRoom.id
+    })
+      .populate({
+        path: 'sender',
+        select: 'name nickName photo'
+      })
+      .populate({
+        path: 'receiver',
+        select: 'name nickName photo'
+      })
+      .populate({
+        path: 'roomId',
+        populate: {
+          path: 'projectId',
+          select: 'title creator'
+        }
+      })
+      .sort({ createdAt: -1 })
+      .limit(1);
+
+    if (message.length > 0) {
+      messages.push(message[0]);
+    }
+  }
   successHandler(res, '取得 Room 成功', messages);
 });
 module.exports = { createChatroomRoom, getChatroomMessage };

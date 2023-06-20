@@ -18,10 +18,6 @@ const messageSchema = new mongoose.Schema(
     roomId: {
       type: mongoose.Schema.ObjectId,
       ref: 'rooms'
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now
     }
   },
   { timestamps: true }
