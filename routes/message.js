@@ -5,14 +5,18 @@ const messagesController = require('../controllers/message');
 
 router.get('/chatroom', isAuth, messagesController.getChatroomMessage);
 router.post('/chatroom', isAuth, messagesController.findOrCreateChatroom);
-router.get('/message/member', isAuth, messagesController.getMemberMessages);
+router.get(
+  '/message/member/:roomId',
+  isAuth,
+  messagesController.getMemberMessages
+);
 router.get(
   '/message/project/:projectId',
   isAuth,
   messagesController.getProjectMessages
 );
 router.get(
-  '/message/admin_project/:projectId',
+  '/message/admin_project/:projectId/:roomId',
   isAdmin,
   messagesController.getAdminProjectMessages
 );
