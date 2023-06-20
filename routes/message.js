@@ -3,12 +3,19 @@ const router = express.Router();
 const { isAuth, isAdmin } = require('../services/auth');
 const messagesController = require('../controllers/message');
 
-router.post('/', isAuth, messagesController.createMessages);
-router.get('/member', isAuth, messagesController.getMemberMessages);
-router.get('/:projectId', isAuth, messagesController.getProjectMessages);
+router.get('/chatroom', isAuth, messagesController.getChatroomMessage);
+router.post('/chatroom', isAuth, messagesController.createChatroomRoom);
+router.get('/message/member', isAuth, messagesController.getMemberMessages);
 router.get(
-  '/project/:projectId',
+  '/message/project/:projectId',
+  isAuth,
+  messagesController.getProjectMessages
+);
+router.get(
+  '/message/admin_project/:projectId',
   isAdmin,
   messagesController.getAdminProjectMessages
 );
+router.post('/message', isAuth, messagesController.createMessages);
+
 module.exports = router;
